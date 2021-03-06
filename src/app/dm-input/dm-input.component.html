@@ -1,0 +1,6 @@
+<div class="omrs-input-group" ngDefaultControl>
+    <label class="omrs-input-filled">
+      <input [(ngModel)]="value" (ngModelChange)="valueChange.emit(value)" type="{{type}}" required>
+      <span class="omrs-input-label">{{title}}</span>
+    </label>
+</div>

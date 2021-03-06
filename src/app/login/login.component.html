@@ -1,0 +1,13 @@
+
+<div class="loginWrapper">
+    <dm-input 
+        [title]="'E-mail'"
+        [type]="'text'"
+        [(value)]="email"></dm-input>
+    <dm-input 
+        [title]="'password'"
+        [type]="'password'"
+        [(value)]="password"></dm-input>
+    <dm-button [text]="'Login'" (click)="login()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
+    <a routerLink="/register">Register</a>
+</div>

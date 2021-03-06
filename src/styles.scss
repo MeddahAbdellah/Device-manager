@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #F7F9F9;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.u-bg-primary {
+  background-color: #3498DB !important;
+}
+
+.u-border-color-primary {
+  border-color:  #5DADE2 !important;
+}
+
+.u-color-white {
+  color: white;
+}

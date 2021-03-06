@@ -1,0 +1,50 @@
+.toolbar {
+  height: 60px;
+  margin: 0px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1976d2;
+  color: white;
+  width:100%;
+  font-weight: 600;
+}
+
+.toolbarLeft {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  height: 100%;
+}
+
+.logoutButton {
+  margin-right: 60px;
+  padding: 10px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  color: #263238;
+  background: #F4F6F7;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.logoutButton:hover {
+  transform: scale(1.05);
+}
+
+.toolbar img {
+  margin: 0 16px;
+}
+
+.toolbar #twitter-logo {
+  height: 40px;
+  margin: 0 16px;
+}
+
+.toolbar #twitter-logo:hover {
+  opacity: 0.8;
+}
+
+  
