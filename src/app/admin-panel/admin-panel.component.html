@@ -1,1 +1,8 @@
-<p>admin-panel works!</p>
+
+<div class="loginWrapper">
+  <dm-input 
+      [title]="'message'"
+      [type]="'text'"
+      [(value)]="signal"></dm-input>
+  <dm-button [text]="'send'" (click)="send()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
+</div>

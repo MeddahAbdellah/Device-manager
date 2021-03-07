@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { DmInputComponent } from './dm-input/dm-input.component';
 import { DmButtonComponent } from './dm-button/dm-button.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { StreamingService } from './services/streaming.service';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   ],
   providers: [
     ApiService,
+    StreamingService,
   ],
   bootstrap: [AppComponent]
 })
