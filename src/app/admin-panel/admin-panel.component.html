@@ -1,8 +1,19 @@
 
-<div class="loginWrapper">
-  <dm-input 
-      [title]="'message'"
-      [type]="'text'"
-      [(value)]="signal"></dm-input>
-  <dm-button [text]="'send'" (click)="send()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
+<div class="adminPanelWrapper">
+  <div class="devicesWrapper">
+    <dm-input 
+    [title]="'Device Name'"
+    [type]="'text'"
+    [(value)]="selectedDeviceName"></dm-input>
+    <dm-button [text]="'Start Streaming'" (click)="startStreaming()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
+    <dm-button [text]="'Refresh Device'" (click)="refreshDevice()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
+  
+  </div>
+
+  <div class="videoWrapper">
+    <div class="deviceVideoWrapper">
+      <video class="deviceVideo" autoplay #video constrols></video>
+    </div>
+    <dm-button [text]="'Play Video'" (click)="play()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
+  </div>
 </div>

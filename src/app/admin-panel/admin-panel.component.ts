@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { StreamingService } from '../services/streaming.service';
 
 @Component({
@@ -8,18 +8,33 @@ import { StreamingService } from '../services/streaming.service';
 })
 export class AdminPanelComponent implements OnInit {
   public isStreamConnected: boolean = false;
-  public signal: string;
+  public selectedDeviceName: string;
+  public videoSrc: any= null;
+
+  @ViewChild('video',{ static: true }) public videoElement: ElementRef<HTMLVideoElement>;
 
   constructor(public _streamingService: StreamingService) { 
-    this._streamingService.startStreaming('test1').subscribe((isStreaming) => {
+
+  }
+
+  ngOnInit() {
+    this._streamingService.videoSrc$.subscribe((src) => {
+      if (!src) return;
+      this.videoElement.nativeElement.srcObject = src;
+    })
+  }
+
+  public startStreaming(deviceName: string): void{
+    this._streamingService.startStreaming(this.selectedDeviceName).subscribe((isStreaming) => {
       this.isStreamConnected = isStreaming;
     })
   }
 
-  ngOnInit() {
+  public play(): void {
+    this.videoElement.nativeElement.play();
   }
 
-  public send(): void {
-    if (this.isStreamConnected) this._streamingService.sendSignal(this.signal);
+  public refreshDevice(): void {
+    this._streamingService.sendSignal('refresh', {});
   }
 }
