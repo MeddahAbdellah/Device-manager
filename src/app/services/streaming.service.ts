@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api-service";
 import * as io from 'socket.io-client';
-import { BehaviorSubject, from, Observable, of, bindCallback } from "rxjs";
-import { map, switchMap, tap } from "rxjs/operators";
+import { BehaviorSubject, Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 import SimplePeer from "simple-peer";
 @Injectable()
 export class StreamingService {
@@ -16,13 +16,12 @@ export class StreamingService {
   constructor(private _apiService: ApiService) {
     this._session = this._socketManager.socket(`/signaling`);
     this._session.connect();
+    this._setupSignalListner();
   }
 
   public startStreaming(deviceName: string): Observable<any> {
     return this._apiService.getStreamingSessionForDevice(deviceName).pipe(
       tap((sessionId) => this._setSessionId(sessionId)),
-      tap(() => this._setupSignalListner()),
-      tap(() => this._initCall()),
     );
   }
   
@@ -39,6 +38,7 @@ export class StreamingService {
   private _setupSignalListner(): void {
     this._session.off();
     this._session.on('listenSignal', (signalData) => {
+    if( signalData.sessionId !== this._sessionId) return;
     console.log('listenSignal', signalData.sender, signalData.data);
       switch(signalData.type) { 
         case "rtcSignal": 
@@ -46,7 +46,8 @@ export class StreamingService {
               this._rtcPeer.signal(signalData.data);
             } catch (err) {}
            break; 
-        case "candidate": 
+        case "initCall": 
+            this._initCall();
            break; 
         default: 
            break; 
@@ -56,15 +57,17 @@ export class StreamingService {
 
   private _initCall(): void {
     const config = {
-        "iceServers": [{
-                "urls": "stun:stun.l.google.com:19302"
-            },
+        "iceServers": [
+            { "urls": "stun:stun.l.google.com:19302" },
+            { "urls": "stun:stun2.l.google.com:19302" },
+            { "urls": "stun:stun3.l.google.com:19302" },
+            
             // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
             // set your own servers here
             {
-                url: 'turn:192.158.29.39:3478?transport=udp',
-                credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                username: '28224511:1379330808'
+              url: 'turn:192.158.29.39:3478?transport=udp',
+              credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+              username: '28224511:1379330808'
             }
         ]
     }
