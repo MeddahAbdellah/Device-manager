@@ -1,4 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ApiService } from '../services/api-service';
 import { StreamingService } from '../services/streaming.service';
 
 @Component({
@@ -10,10 +12,13 @@ export class AdminPanelComponent implements OnInit {
   public isStreamConnected: boolean = false;
   public selectedDeviceName: string;
   public videoSrc: any= null;
+  public userDevices$: Observable<any>;
+  public isLoaderShowing: boolean = false;
 
   @ViewChild('video',{ static: true }) public videoElement: ElementRef<HTMLVideoElement>;
 
-  constructor(public _streamingService: StreamingService) { 
+  constructor(public _apiService: ApiService, public _streamingService: StreamingService) { 
+    this.userDevices$ = this._apiService.getDevices();
 
   }
 
@@ -25,7 +30,8 @@ export class AdminPanelComponent implements OnInit {
   }
 
   public startStreaming(deviceName: string): void{
-    this._streamingService.startStreaming(this.selectedDeviceName).subscribe((isStreaming) => {
+    this.isLoaderShowing = true;
+    this._streamingService.startStreaming(deviceName).subscribe((isStreaming) => {
       this.isStreamConnected = isStreaming;
     })
   }
@@ -36,5 +42,9 @@ export class AdminPanelComponent implements OnInit {
 
   public refreshDevice(): void {
     this._streamingService.sendSignal('refresh', {});
+  }
+
+  public hideLoader(): void {
+    this.isLoaderShowing = false;
   }
 }

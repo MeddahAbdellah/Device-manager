@@ -28,7 +28,7 @@ export class StreamingService {
   
   public sendSignal(type: string, data: any): void {
     console.log('sendSignal', data);
-    this._session.emit('sendSignal', { sessionId: this._sessionId, ...{ type, data } });
+    this._session.emit('sendSignal', { sender: 'user', sessionId: this._sessionId,  type, data });
   }
 
   private _setSessionId(sessionId: string): void {
@@ -39,9 +39,9 @@ export class StreamingService {
   private _setupSignalListner(): void {
     this._session.off();
     this._session.on('listenSignal', (signalData) => {
-    console.log('listenSignal', signalData);
+    console.log('listenSignal', signalData.sender, signalData.data);
       switch(signalData.type) { 
-        case "answer": 
+        case "rtcSignal": 
             try {
               this._rtcPeer.signal(signalData.data);
             } catch (err) {}
@@ -55,9 +55,23 @@ export class StreamingService {
   }
 
   private _initCall(): void {
+    const config = {
+        "iceServers": [{
+                "urls": "stun:stun.l.google.com:19302"
+            },
+            // public turn server from https://gist.github.com/sagivo/3a4b2f2c7ac6e1b5267c2f1f59ac6c6b
+            // set your own servers here
+            {
+                url: 'turn:192.158.29.39:3478?transport=udp',
+                credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                username: '28224511:1379330808'
+            }
+        ]
+    }
     this._rtcPeer = new SimplePeer({
       initiator: true,
       trinkle: false,
+      config,
     });
     this._rtcPeer.removeAllListeners('signal');
     this._rtcPeer.removeAllListeners('error');
@@ -65,9 +79,10 @@ export class StreamingService {
     this._rtcPeer.removeAllListeners('close');
     
     this._rtcPeer.on('signal', (data) => {
-        this.sendSignal(data.type, data)
+        this.sendSignal('rtcSignal', data)
     });
     this._rtcPeer.on('stream',(stream) => {
+      this._rtcPeer.removeAllListeners('signal');
       console.log('stream', stream);
       this.videoSrc$.next(stream);
     });

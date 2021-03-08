@@ -1,19 +1,31 @@
 
 <div class="adminPanelWrapper">
   <div class="devicesWrapper">
-    <dm-input 
+    <div *ngFor='let device of (userDevices$ | async)' class="device">
+      <h5> {{ device.device_name }}</h5>
+      <div class="controlButtons">
+        <button (click)='startStreaming(device.device_name)' *ngIf='device.connected'><img src="assets/images/videocam-24px.svg"></button>
+        <button (click)='refreshDevice(device.device_name)'  *ngIf='device.connected'><img src="assets/images/cached-24px.svg"></button>
+        <div [ngClass]="{'connected': device.connected, 'notConnected': !device.connected}"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="videoWrapper">
+    <div class="deviceVideoWrapper">
+      <video class="deviceVideo" autoplay #video constrols (play)="hideLoader()"></video>
+      <div class="deviceVideoLoader"> <div class="lds-dual-ring" *ngIf="isLoaderShowing"></div> </div>
+    </div>
+    <dm-button [text]="'Play Video'" (click)="play()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
+  </div>
+</div>
+
+<!--
+      <dm-input 
     [title]="'Device Name'"
     [type]="'text'"
     [(value)]="selectedDeviceName"></dm-input>
     <dm-button [text]="'Start Streaming'" (click)="startStreaming()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
     <dm-button [text]="'Refresh Device'" (click)="refreshDevice()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
   
-  </div>
-
-  <div class="videoWrapper">
-    <div class="deviceVideoWrapper">
-      <video class="deviceVideo" autoplay #video constrols></video>
-    </div>
-    <dm-button [text]="'Play Video'" (click)="play()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
-  </div>
-</div>
+-->

@@ -23,11 +23,12 @@ export class ApiService {
     return this.client.post(`${this._server}/login`, { email, password }).pipe(
       catchError((err) => {
         if (err.status === HttpStatus.UNAUTHORIZED) alert('Access Unauthorized');
-        if (err.status === HttpStatus.INTERNAL_SERVER_ERROR) alert('INTERNAL_SERVER_ERROR');
+        if (err.status === HttpStatus.INTERNAL_SERVER_ERROR) alert('INTERNAL_SERVER_ERROR' + err.message);
         return of({ token: null });
       }),
       tap((res)=> {
         this._setToken(res.token);
+        this._setUserId(res.userId);
         this.router.navigate(['/']);
       }),
     );
@@ -51,8 +52,24 @@ export class ApiService {
 
   public getStreamingSessionForDevice(deviceName: string): Observable<any> {
     return this.client.post(`${this._server}/createStreamingSession`, { deviceName }, this._getHttpOptions()).pipe(
-      map((res: any) => res.body.sessionId ),
+      catchError((err) => this._requestErrorManagement(err)),
+      map((res: any) => res.body.sessionId || null),
     );
+  }
+
+  public addDevice(deviceName: string): Observable<any> {
+    return this.client.post(`${this._server}/addDevice`, { deviceName }, this._getHttpOptions()).pipe(
+      catchError((err) => this._requestErrorManagement(err)),
+      tap((res) => console.log('res', res)),
+    )
+  }
+
+  public getDevices(): Observable<any> {
+    return this.client.get(`${this._server}/getDevices`, this._getHttpOptions()).pipe(
+      catchError((err) => this._requestErrorManagement(err)),
+      tap((res) => console.log('res', res)),
+      map((res) => res.body),
+    )
   }
 
   public clearToken(): void {
@@ -72,5 +89,15 @@ export class ApiService {
   private _setToken(token: string): void {
     this._token = token;
     LocalStorageHelper.storeToken(token);
+  }
+
+  private _setUserId(userId: string): void {
+    LocalStorageHelper.storeUserId(userId);
+  }
+  
+  private _requestErrorManagement(err): Observable<any> {
+    if (err.status === HttpStatus.UNAUTHORIZED) alert('Access Unauthorized');
+    if (err.status === HttpStatus.INTERNAL_SERVER_ERROR) alert('INTERNAL_SERVER_ERROR ' + err.error);
+    return of(null);
   }
 }
