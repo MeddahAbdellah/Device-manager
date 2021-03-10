@@ -9,6 +9,7 @@
         <div [ngClass]="{'connected': device.connected, 'notConnected': !device.connected}"></div>
       </div>
     </div>
+    <dm-button [text]="'Add Device'" (click)="addDevice()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
   </div>
 
   <div class="videoWrapper">

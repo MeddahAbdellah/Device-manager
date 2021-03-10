@@ -6,6 +6,9 @@
 
 %wrapper {
   height: 100%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
 }
 .devicesWrapper {
   @extend %wrapper;
@@ -15,11 +18,7 @@
 .videoWrapper {
   @extend %wrapper;
   width: 100%;
-
-  display: flex;
-  flex-flow: column;
   justify-content: center;
-  align-items: center;
   padding: 30px;
 }
 

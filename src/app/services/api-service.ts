@@ -60,8 +60,7 @@ export class ApiService {
   public addDevice(deviceName: string): Observable<any> {
     return this.client.post(`${this._server}/addDevice`, { deviceName }, this._getHttpOptions()).pipe(
       catchError((err) => this._requestErrorManagement(err)),
-      tap((res) => console.log('res', res)),
-    )
+    );
   }
 
   public getDevices(): Observable<any> {
