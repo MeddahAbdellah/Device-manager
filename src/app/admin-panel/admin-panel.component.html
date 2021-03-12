@@ -32,14 +32,17 @@
 
 <ng-template #fileSharing>
   <div class="filesWrapper">
+    <div *ngIf='!fileList' class="lds-dual-ring pageLoading"></div>
     <div class="fileElement" *ngFor="let file of fileList">
-      <h5> {{ file.fileName }}</h5>
+      <div class="fileTitle">
+        <img src="assets/images/description-24px.svg">
+        <h5> {{ file.fileName }}</h5>
+      </div>
       <div class="controlButtons">
-        <button (click)='getFile(file.fileName)'>getFile</button>
-        <button (click)='previewFile(file.fileName)'  *ngIf='file.fileName === this.fileDownloadedName'>preview</button>
-        <button (click)='downloadFile(file.fileName)'  *ngIf='file.fileName === this.fileDownloadedName'>Download</button>
-
-        <div *ngIf='file.fileName === this.fileDownloadingName'>loading</div>
+        <button (click)='getFile(file.fileName)' *ngIf='file.fileName !== this.fileDownloadedName && file.fileName !== this.fileDownloadingName'><img src="assets/images/cloud_download-24px.svg"></button>
+        <button (click)='previewFile(file.fileName)'  *ngIf='file.fileName === this.fileDownloadedName'><img src="assets/images/remove_red_eye-24px.svg"></button>
+        <button (click)='downloadFile(file.fileName)'  *ngIf='file.fileName === this.fileDownloadedName'><img src="assets/images/get_app-24px.svg"></button>
+        <div class="lds-dual-ring-small-blue" *ngIf='file.fileName === this.fileDownloadingName'></div>
       </div>
     </div>
   </div>

@@ -23,7 +23,7 @@ export class AdminPanelComponent implements OnInit {
   public isLoaderShowing: boolean = false;
   public currentPage: AdminPage = AdminPage.VIDEO_STREAMING;
   public adminPage: typeof AdminPage = AdminPage;
-  public fileList: BehaviorSubject<any> = new BehaviorSubject(null);
+  public fileList = null;
   public fileDownloadingName: string = '';
   public fileDownloadedName: string = '';
 
