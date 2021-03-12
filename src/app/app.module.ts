@@ -13,6 +13,7 @@ import { DmInputComponent } from './dm-input/dm-input.component';
 import { DmButtonComponent } from './dm-button/dm-button.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { StreamingService } from './services/streaming.service';
+import { FileSharingService } from './services/fileStream.service';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { StreamingService } from './services/streaming.service';
   providers: [
     ApiService,
     StreamingService,
+    FileSharingService,
   ],
   bootstrap: [AppComponent]
 })

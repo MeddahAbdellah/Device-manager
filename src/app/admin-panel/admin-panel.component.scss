@@ -10,6 +10,20 @@
   flex-flow: column;
   align-items: center;
 }
+
+.filesWrapper {
+  @extend %wrapper;
+  width: 100%;
+  background-color: white;
+}
+
+.fileElement{
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .devicesWrapper {
   @extend %wrapper;
   background-color: #F2F3F4;
@@ -26,7 +40,7 @@
   position: relative;
   width: 640px;
   height: 480px;
-  background: grey;
+  background: #1C2833;
   border-radius: 5px;
   overflow: hidden;
   video {
@@ -91,15 +105,15 @@
 
 .lds-dual-ring {
   display: inline-block;
-  width: 80px;
-  height: 80px;
+  width: 30px;
+  height: 30px;
 }
 
 .lds-dual-ring:after {
   content: " ";
   display: block;
-  width: 64px;
-  height: 64px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 6px solid #fff;
   border-color: #fff transparent #fff transparent;
@@ -129,4 +143,8 @@
 .notConnected {
   @extend %connectionState;
   background-color: #F44336;
+}
+
+.display-none {
+  display: none;
 }

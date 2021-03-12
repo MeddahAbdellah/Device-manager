@@ -4,6 +4,7 @@
     <div *ngFor='let device of (userDevices$ | async)' class="device">
       <h5> {{ device.device_name }}</h5>
       <div class="controlButtons">
+        <button (click)='startFileSharing(device.device_name)' *ngIf='device.connected'><img src="assets/images/find_in_page-24px.svg"></button>
         <button (click)='startStreaming(device.device_name)' *ngIf='device.connected'><img src="assets/images/videocam-24px.svg"></button>
         <button (click)='refreshDevice(device.device_name)'  *ngIf='device.connected'><img src="assets/images/cached-24px.svg"></button>
         <div [ngClass]="{'connected': device.connected, 'notConnected': !device.connected}"></div>
@@ -11,15 +12,38 @@
     </div>
     <dm-button [text]="'Add Device'" (click)="addDevice()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
   </div>
-
-  <div class="videoWrapper">
+  <div class="videoWrapper" [ngClass]="{'display-none': currentPage!==adminPage.VIDEO_STREAMING}">
     <div class="deviceVideoWrapper">
       <video class="deviceVideo" autoplay #video constrols (play)="hideLoader()"></video>
       <div class="deviceVideoLoader"> <div class="lds-dual-ring" *ngIf="isLoaderShowing"></div> </div>
     </div>
     <dm-button [text]="'Play Video'" (click)="play()" [customClass]="'u-bg-primary u-border-color-primary u-color-white'"></dm-button>
   </div>
+  <ng-container [ngSwitch]='currentPage'>
+    <ng-container *ngSwitchCase="adminPage.FILE_LIST">
+      <ng-container *ngTemplateOutlet="fileSharing"></ng-container>
+    </ng-container>
+    <ng-container *ngSwitchCase="adminPage.VIDEO_VIZ">
+      <ng-container *ngTemplateOutlet="videoStreaming"></ng-container>
+    </ng-container>
+  </ng-container>
+
 </div>
+
+<ng-template #fileSharing>
+  <div class="filesWrapper">
+    <div class="fileElement" *ngFor="let file of fileList">
+      <h5> {{ file.fileName }}</h5>
+      <div class="controlButtons">
+        <button (click)='getFile(file.fileName)'>getFile</button>
+        <button (click)='previewFile(file.fileName)'  *ngIf='file.fileName === this.fileDownloadedName'>preview</button>
+        <button (click)='downloadFile(file.fileName)'  *ngIf='file.fileName === this.fileDownloadedName'>Download</button>
+
+        <div *ngIf='file.fileName === this.fileDownloadingName'>loading</div>
+      </div>
+    </div>
+  </div>
+</ng-template>
 
 <!--
       <dm-input 

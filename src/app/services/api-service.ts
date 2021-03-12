@@ -57,6 +57,13 @@ export class ApiService {
     );
   }
 
+  public getFileSharingSessionForDevice(deviceName: string): Observable<any> {
+    return this.client.post(`${this._server}/getFileSharingSessionForDevice`, { deviceName }, this._getHttpOptions()).pipe(
+      catchError((err) => this._requestErrorManagement(err)),
+      map((res: any) => res.body.sessionId || null),
+    );
+  }
+
   public addDevice(deviceName: string): Observable<any> {
     return this.client.post(`${this._server}/addDevice`, { deviceName }, this._getHttpOptions()).pipe(
       catchError((err) => this._requestErrorManagement(err)),
