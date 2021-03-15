@@ -6,7 +6,7 @@
       <div class="controlButtons">
         <button (click)='startFileSharing(device.device_name)' *ngIf='device.connected'><img src="assets/images/find_in_page-24px.svg"></button>
         <button (click)='startStreaming(device.device_name)' *ngIf='device.connected'><img src="assets/images/videocam-24px.svg"></button>
-        <button (click)='refreshDevice(device.device_name)'  *ngIf='device.connected'><img src="assets/images/cached-24px.svg"></button>
+        <button (click)='refreshDevice()'  *ngIf='device.connected'><img src="assets/images/cached-24px.svg"></button>
         <div [ngClass]="{'connected': device.connected, 'notConnected': !device.connected}"></div>
       </div>
     </div>
@@ -46,6 +46,9 @@
       </div>
     </div>
   </div>
+</ng-template>
+
+<ng-template #videoStreaming>
 </ng-template>
 
 <!--
